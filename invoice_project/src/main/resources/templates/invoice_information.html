@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Invoice_Info</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"   th:href="@{/main.css}">
+    <script th:src="@{/js/script.js}"></script>
+
+</head>
+<body>
+<br>
+
+<div class="container">
+    <h3>Invoice Info.</h3>
+    <hr>
+    <form th:action="@{/saveInvoice}" th:object="${invoice_information }" method="POST" onsubmit="return mySubmit()">
+        <div class="form-row">
+            <div class="form-group  ">
+                <label>Bill To* :</label>
+
+                <select name="bill_to" id="bill_to" class="form-control">
+                    <option> saddd</option>
+                    <option >saddd</option>
+                    <option >saddd</option>
+                </select>
+
+                <label>Invoice Date* :</label>
+
+                <input type="date" name="invoice_date"   class="form-control" id="invoice_date" placeholder="Invoice Date"  >
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group  ">
+                <label>Invoice#* :</label>
+
+                <input type="text" name="invoice" class="form-control" id="invoice" placeholder="Invoice (INV-0001)">
+
+                <label>Due Date* :</label>
+
+                <input type="date" name="due_date" class="form-control" id="due_date" placeholder="Due Date">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group ">
+                <label>Status* :</label>
+
+                <select name="status" id="status"  class="form-control">
+                    <option> saddd</option>
+                    <option >saddd</option>
+                    <option >saddd</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="form-row"  >
+            <h4>Invoice Details</h4>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product*</th>
+                    <th scope="col">Description*</th>
+                    <th scope="col">Price*</th>
+                    <th scope="col">Qty*</th>
+                    <th scope="col">Tax(%)</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody id="data_table">
+                <tr>
+                    <td><input type="text" id="auto_id" value="1" hidden></td>
+                    <td>
+                        <select name="product" id="product" class="form-control"  placeholder="Product">
+                            <option> saddd</option>
+                            <option >saddd</option>
+                            <option >saddd</option>
+
+                        </select>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <textarea class="form-control rounded-0" name="description" id="description" rows="3" maxlength="500"
+                                      placeholder="Description"></textarea>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="number" name="price" id="price" class="form-control" placeholder="Price"  >
+                    </td>
+                    <td>
+                        <input type="number" name="qty" class="form-control" id="qty" placeholder="Qty">
+                    </td>
+                    <td>
+                        <input type="number" name="tax" class="form-control" id="tax" placeholder="Tax(%)" value="0"  >
+                    </td>
+                    <td><span  id="total">0</span></td>
+                    <td><input type="button" class="add" onclick="return addnewRow();" value="Add New"></td>
+                </tr>
+                </tbody>
+                <tr>
+
+                    <td>Sub Total :</td>
+                    <td><span name="sub_total" id="sub_total">0</span></td>
+                </tr>
+                <tr>
+
+                    <td>Total Tax :</td>
+                    <td><span name="total_tax" id="total_tax">0</span></td>
+                </tr>
+                <tr>
+
+                    <td>Grand Total:</td>
+                                        <td><span name="grand_total" id="grand_total">0</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>Invoice Note(Optional) :</label>
+            </div>
+            <div class="form-group col-md-4">
+                <textarea class="form-control rounded-0" name="invoice_note" id="invoice_note" rows="3" maxlength="1000"
+                          placeholder="Invoice Note"></textarea>
+            </div>
+
+            <div class="form-group col-md-2">
+                <label>Attachment(Optional) :</label>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="file" name="attachment" class="form-control" id="attachment" placeholder="Attachment">
+            </div>
+        </div>
+        <div style="margin-left:45%;">
+            <button type="submit" class="btn " >Save</button>
+            <button type="clear" class="btn  ">Clear</button>
+        </div>
+    </form>
+
+</div>
+
+</body>
+</html>

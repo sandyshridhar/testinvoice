@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice_Info</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/main.css">
+
+</head>
+<body>
+<br>
+
+<div class="container">
+    <h3>Invoice Info.</h3>
+    <hr>
+    <form  th:action="@{/saveInvoice}" th:object="${Invoice_Info}" method="POST">
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>Bill To* :</label>
+            </div>
+            <div>
+
+              <select name="designation"  class="form-control">
+                    <option th:each="designation :${designations}"
+                            th:text="${designation}">
+                </select>
+            </div>
+
+            <div class="form-group col-md-2">
+                <label>Invoice Date* :</label>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="date"  field="*{invoice_date}" class="form-control" id="invoice_date" placeholder="Invoice Date"  >
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>Invoice#* :</label>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="text"  field="*{invoice}" class="form-control" id="invoice" placeholder="Invoice (INV-0001)">
+            </div>
+            <div class="form-group col-md-2">
+                <label>Due Date* :</label>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="date"  field="*{due_date}" class="form-control" id="due_date" placeholder="Due Date">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>Status* :</label>
+            </div>
+
+            <div class="form-group col-md-2">
+                <label hidden>Status :</label>
+            </div>
+            <div class="form-group col-md-4">
+                <input type="text" class="form-control" style="visibility: hidden;">
+            </div>
+        </div>
+
+        <div style="margin-left:45%;">
+            <button type="submit" class="btn btn-primary col-2" onclick="myClick();">Save</button>
+            <!--            <button type="submit" class="btn btn-primary" onclick="click();" >Save</button>-->
+            <button type="clear" class="btn btn-warning">Clear</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function myClick()
+    {
+        console.log("test");
+    }
+</script>
+</body>
+</html>
