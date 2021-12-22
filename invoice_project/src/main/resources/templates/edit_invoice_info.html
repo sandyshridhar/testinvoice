@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Invoice_Info</title>
+    <title>Invoice List</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/main.css">
+    <link rel="stylesheet" th:href="@{/main.css}">
 
 </head>
+
 <body>
 <br>
-
 <div class="container">
-    <h3>Invoice Info.</h3>
+
+    <h2>Update Invoice Info</h2>
     <hr>
-    <form  th:action="@{/saveInvoice}" th:object="${Invoice_Info}" method="POST">
+    <form th:action="@{/updateInvoice}" th:object="${invoice_information}" method="POST" onsubmit="return (mySave())">
+
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label>Bill To* :</label>
             </div>
-            <div>
-
-              <select name="designation"  class="form-control">
-                    <option th:each="designation :${designations}"
-                            th:text="${designation}">
+            <div class="form-group col-md-4">
+                <select name="bill_to" id="bill_to" class="form-control" th:value="${invoiceInfo.bill_to}">
+                    <option value="Kiran">Kiran</option>
+                    <option value="Vicky">Vicky</option>
+                    <option value="Raju">Raju</option>
+                    <option value="Diya">Diya</option>
                 </select>
             </div>
-
             <div class="form-group col-md-2">
                 <label>Invoice Date* :</label>
             </div>
             <div class="form-group col-md-4">
-                <input type="date"  field="*{invoice_date}" class="form-control" id="invoice_date" placeholder="Invoice Date"  >
+                <input type="text" name="invoice_date"   class="form-control"
+                       id="invoice_date" placeholder="Invoice Date" th:value="${invoiceInfo.invoice_date}">
             </div>
         </div>
         <div class="form-row">
@@ -43,35 +46,43 @@
                 <label>Invoice#* :</label>
             </div>
             <div class="form-group col-md-4">
-                <input type="text"  field="*{invoice}" class="form-control" id="invoice" placeholder="Invoice (INV-0001)">
+                <input type="text" name="invoice" class="form-control"   id="invoice"
+                       placeholder="Invoice (INV-0001)" th:value="${invoiceInfo.invoice}">
             </div>
             <div class="form-group col-md-2">
                 <label>Due Date* :</label>
             </div>
             <div class="form-group col-md-4">
-                <input type="date"  field="*{due_date}" class="form-control" id="due_date" placeholder="Due Date">
+                <input type="date" name="due_date" class="form-control" id="due_date"
+                       placeholder="Due Date" th:value="${invoiceInfo.due_date}">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label>Status* :</label>
             </div>
-
+            <div class="form-group col-md-4">
+                <select name="status" id="status" class="form-control" th:value="${invoiceInfo.due_date}">
+                    <option value="Draft">Draft</option>
+                    <option value="Save">Save</option>
+                    <option value="Paid">Paid</option>
+                </select>
+            </div>
             <div class="form-group col-md-2">
-                <label hidden>Status :</label>
+                <label hidden>** :</label>
             </div>
             <div class="form-group col-md-4">
                 <input type="text" class="form-control" style="visibility: hidden;">
             </div>
         </div>
 
-        <div style="margin-left:45%;">
-            <button type="submit" class="btn btn-primary col-2" >Save</button>
-            <!--            <button type="submit" class="btn btn-primary" onclick="click();" >Save</button>-->
-            <button type="clear" class="btn btn-warning">Clear</button>
-        </div>
+        <button type="submit" class="btn btn-info col-2" style="margin-left:45%;"> Update</button>
     </form>
+
+
 </div>
 
+
 </body>
+
 </html>

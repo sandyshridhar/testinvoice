@@ -8,8 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet"   th:href="@{/main.css}">
-    <script th:src="@{/js/script.js}"></script>
+    <link rel="stylesheet" th:href="@{/main.css}">
+<!--    <script th:src="@{/js/script.js}"></script>-->
 
 </head>
 <body>
@@ -18,46 +18,48 @@
 <div class="container">
     <h3>Invoice Info.</h3>
     <hr>
-    <form th:action="@{/saveInvoice}" th:object="${invoice_information }" method="POST" onsubmit="return mySubmit()">
+    <form th:action="@{/saveInvoice}" th:object="${invoice_information }"   method="POST" onsubmit="return (mySave())"
+          enctype="multipart/form-data">
         <div class="form-row">
-            <div class="form-group  ">
+            <div class="form-group ">
                 <label>Bill To* :</label>
-
-                <select name="bill_to" id="bill_to" class="form-control">
-                    <option> saddd</option>
-                    <option >saddd</option>
-                    <option >saddd</option>
+                <select name="bill_to" id="bill_to"  class="form-control">
+                    <option value="Kiran">Kiran</option>
+                    <option value="Vicky">Vicky</option>
+                    <option value="Raju">Raju</option>
+                    <option value="Diya">Diya</option>
                 </select>
 
                 <label>Invoice Date* :</label>
-
-                <input type="date" name="invoice_date"   class="form-control" id="invoice_date" placeholder="Invoice Date"  >
+                <input type="text" name="invoice_date" th:value="${{invoice_date}}" class="form-control"
+                       id="invoice_date" placeholder="Invoice Date" readonly>
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group  ">
+            <div class="form-group ">
                 <label>Invoice#* :</label>
-
                 <input type="text" name="invoice" class="form-control" id="invoice" placeholder="Invoice (INV-0001)">
 
                 <label>Due Date* :</label>
-
                 <input type="date" name="due_date" class="form-control" id="due_date" placeholder="Due Date">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group ">
                 <label>Status* :</label>
-
-                <select name="status" id="status"  class="form-control">
-                    <option> saddd</option>
-                    <option >saddd</option>
-                    <option >saddd</option>
+                <select name="status" id="status" class="form-control">
+                    <option value="Draft">Draft</option>
+                    <option value="Save">Save</option>
+                    <option value="Paid">Paid</option>
                 </select>
 
+                <label hidden> </label>
+            </div>
+            <div class="form-group ">
+                <input type="text" class="form-control" style="visibility: hidden;">
             </div>
         </div>
-        <div class="form-row"  >
+        <div class="form-row" th:object="${invoice_details}">
             <h4>Invoice Details</h4>
 
             <table class="table table-bordered">
@@ -77,73 +79,179 @@
                 <tr>
                     <td><input type="text" id="auto_id" value="1" hidden></td>
                     <td>
-                        <select name="product" id="product" class="form-control"  placeholder="Product">
-                            <option> saddd</option>
-                            <option >saddd</option>
-                            <option >saddd</option>
-
+                        <!--                        <input type="number" name="price1" id="price1" class="form-control" placeholder="Price" step="10.01">-->
+                        <select name="product" id="product" class="form-control" placeholder="Product">
+                            <option value="Mobile">Mobile</option>
+                            <option value="Watch">Watch</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Home accessories">Home accessories</option>
+                            <option value="footwear">footwear</option>
                         </select>
                     </td>
                     <td>
                         <div class="form-group">
-                            <textarea class="form-control rounded-0" name="description" id="description" rows="3" maxlength="500"
+                            <textarea class="form-control rounded-0" name="description" id="description" rows="3"
+                                      maxlength="500"
                                       placeholder="Description"></textarea>
                         </div>
                     </td>
                     <td>
-                        <input type="number" name="price" id="price" class="form-control" placeholder="Price"  >
+                        <input type="number" name="price" id="price" class="form-control" placeholder="Price" min="0">
                     </td>
                     <td>
-                        <input type="number" name="qty" class="form-control" id="qty" placeholder="Qty">
+                        <input type="number" name="qty" class="form-control" id="qty" placeholder="Qty" min="0">
                     </td>
                     <td>
-                        <input type="number" name="tax" class="form-control" id="tax" placeholder="Tax(%)" value="0"  >
+                        <input type="number" name="tax" class="form-control" id="tax" placeholder="Tax(%)" value="0" min="0">
                     </td>
-                    <td><span  id="total">0</span></td>
-                    <td><input type="button" class="add" onclick="return addnewRow();" value="Add New"></td>
+                    <td><span id="total">0</span></td>
+                    <td><input type="button" class="add" onclick="return add_row();" value="Add"></td>
                 </tr>
                 </tbody>
                 <tr>
-
+                    <td colspan="6"  rowspan="2" >
+                        <div class="form-group  col-md-2">
+                            <label>Invoice Note(Optional) :</label>
+                        </div>
+                        <div class="form-group   col-md-6">
+                        <textarea class="form-control rounded-0" name="invoice_note" id="invoice_note" rows="3" maxlength="1000"
+                          placeholder="Invoice Note"></textarea>
+                        </div>
+                    </td>
                     <td>Sub Total :</td>
                     <td><span name="sub_total" id="sub_total">0</span></td>
                 </tr>
                 <tr>
-
                     <td>Total Tax :</td>
                     <td><span name="total_tax" id="total_tax">0</span></td>
                 </tr>
                 <tr>
-
+                    <td colspan="6" >
+                        <div class="form-group  col-md-2">
+                            <label>Attachment (Optional) :</label>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="file" name="myfile" placeholder="Attachment" id="myfile" class="form-control" >
+                        </div>
+                    </td>
                     <td>Grand Total:</td>
-                                        <td><span name="grand_total" id="grand_total">0</span></td>
+<!--                    <td><input type="text" name="grand_total" class="form-control" id="grand_total"   disabled/></td>-->
+                    <td><input type="text"  field="*{grand_total1}" name="grand_total1" id="grand_total1"     class="form-control col-4 mb-4"   /></td>
                 </tr>
+
             </table>
         </div>
 
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                <label>Invoice Note(Optional) :</label>
-            </div>
-            <div class="form-group col-md-4">
-                <textarea class="form-control rounded-0" name="invoice_note" id="invoice_note" rows="3" maxlength="1000"
-                          placeholder="Invoice Note"></textarea>
-            </div>
-
-            <div class="form-group col-md-2">
-                <label>Attachment(Optional) :</label>
-            </div>
-            <div class="form-group col-md-4">
-                <input type="file" name="attachment" class="form-control" id="attachment" placeholder="Attachment">
-            </div>
-        </div>
         <div style="margin-left:45%;">
-            <button type="submit" class="btn " >Save</button>
-            <button type="clear" class="btn  ">Clear</button>
+            <button type="submit" class="btn btn-primary col-2">Save</button>
+            <!--            <input type="button" class="btn btn-primary" onclick="mySave();" value="Save">-->
+            <button type="clear" class="btn btn-warning">Clear</button>
         </div>
     </form>
 
 </div>
+<script>
+    function mySave()
+{
+
+    var bill_to=document.getElementById("bill_to").value;
+
+    var invoice_date=document.getElementById("invoice_date").value;
+    var invoice=document.getElementById("invoice").value;
+    var due_date=document.getElementById("due_date").value;
+    var status=document.getElementById("status").value;
+    var attachment=document.getElementById("myfile").value;
+
+    var table=document.getElementById("data_table");
+    var table_len=(table.rows.length)-1;
+
+    var FromDate = new Date(invoice_date);
+    var ToDate = new Date(due_date);
+   if(FromDate>ToDate)
+    {
+        alert("Invalid Date Range!");
+        return false;
+    }
+    else if(table_len  ==0||table_len ==null)
+    {
+        alert("At lest one Invoice Detail is required.");
+        return false;
+    }
+
+    let file_extension=attachment.substring(attachment.lastIndexOf('.') + 1);
+
+    if(file_extension!="")
+    {
+        if((String(file_extension.toLowerCase())) == "jpg"||(String(file_extension.toLowerCase())) == "png" || (String(file_extension.toLowerCase())) == "jpeg"||(String(file_extension.toLowerCase())) == "excel"||(String(file_extension.toLowerCase())) == "doc"||(String(file_extension.toLowerCase())) == "pdf")
+        {
+        }else
+        { alert("required only excel/doc/pdf/image Files.");
+        return false;}
+    }
+}
+
+function add_row()
+{
+var auto_id=document.getElementById("auto_id").value;
+var  product=document.getElementById("product").value;
+var description=document.getElementById("description").value;
+var price=document.getElementById("price").value;
+var qty=document.getElementById("qty").value;
+var tax=document.getElementById("tax").value;
+var total=parseInt(price)*parseInt(qty)
+
+var table=document.getElementById("data_table");
+var table_len=(table.rows.length)-1;
+
+var row = table.insertRow(table_len).outerHTML="<tr id='row"+table_len+"'> " +
+
+"<td id='auto_id"+table_len+"'><input type='text' value='"+auto_id+"' class='form-control'></td> " +
+"<td id='product"+table_len+"'><input type='text'  name='product' value='"+product+"' class='form-control'></td> " +
+"<td id='description"+table_len+"' ><input type='text' name='description' value='"+description+"' class='form-control'></td> " +
+"<td id='price"+table_len+"' ><input type='text' name='price' value='"+price+"' class='form-control'></td> " +
+"<td id='qty"+table_len+"' ><input type='text' name='qty' value='"+qty+"' class='form-control'></td> " +
+"<td id='tax"+table_len+"' ><input type='text' name='tax' value='"+tax+"' id='tax1"+table_len+"' class='form-control'></td> " +
+"<td id='total"+table_len+"' ><input type='text' name='total' value='"+total+"' id='tot"+table_len+"' class='form-control'></td> " +
+
+"<td><i class='fa fa-trash' style='font-size:24px' onclick='delete_row("+table_len+")'> </i></td> " +
+"</tr>";
+
+var sub_total=0;
+var total_tax=0;
+
+for(var i=0;i<=table_len;i++)
+{
+   sub_total+= parseInt(document.getElementById("tot"+i).value);
+   total_tax+=parseInt(document.getElementById("tax1"+i ).value);
+}
+
+document.getElementById("auto_id").value=parseInt(auto_id)+1 ;
+document.getElementById("product").value="";
+document.getElementById("description").value="";
+document.getElementById("price").value="";
+document.getElementById("qty").value="";
+document.getElementById("tax").value=0;
+//document.getElementById("total").value="";
+document.getElementById("sub_total").innerHTML=sub_total;
+document.getElementById("total_tax").innerHTML=total_tax;
+document.getElementById("grand_total1").value=sub_total+total_tax;
+
+}
+
+
+ function delete_row(no)
+ {
+     document.getElementById("row"+no+"").outerHTML="";
+
+    var table=document.getElementById("data_table");
+    var table_len=(table.rows.length)-1;
+    console.log( parseInt(document.getElementById("tot" ).value))
+
+          document.getElementById("sub_total").innerHTML=sub_total;
+          document.getElementById("total_tax").innerHTML=total_tax;
+          document.getElementById('grand_total').innerHTML=sub_total+total_tax;
+ }
+</script>
 
 </body>
 </html>
